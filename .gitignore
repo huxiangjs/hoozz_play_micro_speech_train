@@ -163,3 +163,7 @@ cython_debug/
 
 # VSCode
 *.code-workspace
+
+# Pipenv
+Pipfile
+Pipfile.lock
