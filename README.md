@@ -1,6 +1,8 @@
 # Hoozz Play Micro-speech Train
 This project is used to train the micro-speech model.
 
+Original reference: [train_micro_speech_model.ipynb](https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/examples/micro_speech/train/train_micro_speech_model.ipynb)
+
 ## Environment
 ```shell
 > python --version
