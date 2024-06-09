@@ -113,6 +113,14 @@ def model_formate_output():
         out_data[-1] = '\n' if out_data[-1] == ' ' else out_data[-1]
         out_data.append('};\n\n')
         out_data.append(str(f'static const unsigned int tflite_model_size = {len(model_data)};\n'))
+        out_data.append(str(f'static const int tflite_model_audio_sample_frequency = {model_config.SAMPLE_RATE};\n'))
+        out_data.append(str(f'static const int tflite_category_count = {model_config.number_of_total_labels};\n'))
+        out_data.append('static const char* tflite_category_labels[tflite_category_count] = {\n')
+        out_data.append('\t"silence",\n')
+        out_data.append('\t"unknown",\n')
+        keys = model_config.WANTED_WORDS.split(',')
+        out_data += [str(f'\t"{_}",\n') for _ in keys]
+        out_data.append('};\n')
         fout.writelines(''.join(out_data))
 
 def main():
