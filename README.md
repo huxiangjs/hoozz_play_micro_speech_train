@@ -31,3 +31,62 @@ Werkzeug==2.2.3
 wrapt==1.16.0
 zipp==3.15.0
 ```
+
+## Prepare the dataset
+
+We use the dataset provided by Google as the basic dataset, the download address is: [speech_commands_v0.02.tar.gz](https://storage.googleapis.com/download.tensorflow.org/data/speech_commands_v0.02.tar.gz)
+
+
+Create a **dataset/** directory and unzip the downloaded dataset to the **dataset/**  directory. The unzipped directory structure is roughly as follows:
+```shell
+.
+|-- LICENSE
+|-- README.md
+|-- dataset
+|   |-- LICENSE
+|   |-- README.md
+|   |-- _background_noise_
+|   |-- backward
+|   |-- ...
+|   |-- yes
+|   `-- zero
+|-- model_config.py
+|-- model_train.py
+|-- requirements.txt
+|-- speech_commands_v0.02.tar.gz
+`-- tensorflow
+    ...
+```
+
+Next, we need to prepare our own data set. The audio data has the following format requirements:
+* File format: wav
+* Sampling depth: 16 bits
+* Channel: single channel
+* Sampling rate: 16kHz
+
+Once you are ready, name the folders according to the keywords and copy the data into the corresponding folders. After completing the above operations, your directory should look like this:
+```shell
+.
+|-- ...
+|-- dataset
+|   |-- LICENSE
+|   |-- README.md
+|   |-- _background_noise_
+|   |-- backward
+|   |-- ...
+|   |-- yes
+|   |-- your_keywords_001
+|   |   |-- your_wav_001.wav
+|   |   |-- your_wav_002.wav
+|   |   |-- ...
+|   |-- your_keywords_002
+|   |   |-- ...
+|   |-- your_keywords_003
+|   |   |-- ...
+|   |-- your_keywords_004
+|   |   |-- ...
+|   |-- ...
+|   `-- zero
+|-- ...
+`-- ...
+```

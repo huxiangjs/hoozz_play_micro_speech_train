@@ -167,3 +167,9 @@ cython_debug/
 # Pipenv
 Pipfile
 Pipfile.lock
+
+# Data Set
+dataset/
+*.gz
+*.tar
+*.zip
