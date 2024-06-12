@@ -144,6 +144,7 @@ def main():
         str(f'--verbosity={model_config.VERBOSITY}'),
         str(f'--eval_step_interval={model_config.EVAL_STEP_INTERVAL}'),
         str(f'--save_step_interval={model_config.SAVE_STEP_INTERVAL}'),
+        str(f'--batch_size={model_config.TRAINING_BATCH_SIZE}'),
     ]
     train_process = subprocess.Popen(train_info, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     # print(train_process.stdout)

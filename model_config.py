@@ -21,6 +21,8 @@ WANTED_WORDS = "yes,no"
 TRAINING_STEPS = "12000,3000"
 LEARNING_RATE = "0.001,0.0001"
 
+TRAINING_BATCH_SIZE = 100
+
 # Calculate the total number of steps, which is used to identify the checkpoint
 # file name.
 TOTAL_STEPS = str(sum(map(lambda string: int(string), TRAINING_STEPS.split(","))))
