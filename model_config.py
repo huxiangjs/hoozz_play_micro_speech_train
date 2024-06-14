@@ -43,7 +43,6 @@ UNKNOWN_PERCENTAGE = equal_percentage_of_training_samples
 
 # Constants which are shared during training and inference
 PREPROCESS = 'micro'
-WINDOW_STRIDE = 20
 MODEL_ARCHITECTURE = 'tiny_conv' # Other options include: single_fc, conv,
                       # low_latency_conv, low_latency_svdf, tiny_embedding_conv
 
@@ -78,10 +77,13 @@ QUANT_INPUT_MAX = 26.0
 QUANT_INPUT_RANGE = QUANT_INPUT_MAX - QUANT_INPUT_MIN
 
 # Configuration of model quantization
-SAMPLE_RATE = 16000
-CLIP_DURATION_MS = 1000
-WINDOW_SIZE_MS = 30.0
-FEATURE_BIN_COUNT = 40
+SAMPLE_RATE = 16000                 # The sampling frequency of the input speech
+WINDOW_SIZE_MS = 30
+WINDOW_STRIDE_MS = 20
+FEATURE_SIZE = 40                   # Feature size of speech processing model output
+FEATURE_COUNT = 49
+CLIP_DURATION_MS = WINDOW_STRIDE_MS * (FEATURE_COUNT + 1) # Maximum time for input speech recognition
+
 BACKGROUND_FREQUENCY = 0.8
 BACKGROUND_VOLUME_RANGE = 0.1
 TIME_SHIFT_MS = 100.0

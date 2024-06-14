@@ -16,7 +16,7 @@ import datetime
 model_settings = models.prepare_model_settings(
     len(input_data.prepare_words_list(model_config.WANTED_WORDS.split(','))),
     model_config.SAMPLE_RATE, model_config.CLIP_DURATION_MS, model_config.WINDOW_SIZE_MS,
-    model_config.WINDOW_STRIDE, model_config.FEATURE_BIN_COUNT, model_config.PREPROCESS)
+    model_config.WINDOW_STRIDE_MS, model_config.FEATURE_SIZE, model_config.PREPROCESS)
 audio_processor = input_data.AudioProcessor(
     model_config.DATA_URL, model_config.DATASET_DIR,
     model_config.SILENT_PERCENTAGE, model_config.UNKNOWN_PERCENTAGE,
@@ -46,7 +46,7 @@ def model_quantize():
                                                    model_config.TIME_SHIFT_MS,
                                                    'testing',
                                                    sess)
-            flattened_data = np.array(data.flatten(), dtype=np.float32).reshape(1, 1960)
+            flattened_data = np.array(data.flatten(), dtype=np.float32).reshape(1, model_config.FEATURE_SIZE * model_config.FEATURE_COUNT)
             yield [flattened_data]
         converter.representative_dataset = representative_dataset_gen
         tflite_model = converter.convert()
@@ -114,6 +114,11 @@ def model_formate_output():
         out_data.append('};\n\n')
         out_data.append(str(f'static const unsigned int tflite_model_size = {len(model_data)};\n'))
         out_data.append(str(f'static const int tflite_model_audio_sample_frequency = {model_config.SAMPLE_RATE};\n'))
+        out_data.append(str(f'static const int tflite_feature_size = {model_config.FEATURE_SIZE};\n'))
+        out_data.append(str(f'static const int tflite_feature_count = {model_config.FEATURE_COUNT};\n'))
+        out_data.append('static const int tflite_feature_element_count = (tflite_feature_size * tflite_feature_count);\n')
+        out_data.append(str(f'static const int tflite_feature_stride_ms = {model_config.WINDOW_STRIDE_MS};\n'))
+        out_data.append(str(f'static const int tflite_feature_duration_ms = {model_config.WINDOW_SIZE_MS};\n\n'))
         out_data.append(str(f'static const int tflite_category_count = {model_config.number_of_total_labels};\n'))
         out_data.append('static const char* tflite_category_labels[tflite_category_count] = {\n')
         out_data.append('\t"silence",\n')
@@ -135,7 +140,11 @@ def main():
         str(f'--silence_percentage={model_config.SILENT_PERCENTAGE}'),
         str(f'--unknown_percentage={model_config.UNKNOWN_PERCENTAGE}'),
         str(f'--preprocess={model_config.PREPROCESS}'),
-        str(f'--window_stride={model_config.WINDOW_STRIDE}'),
+        str(f'--sample_rate={model_config.SAMPLE_RATE}'),
+        str(f'--clip_duration_ms={model_config.CLIP_DURATION_MS}'),
+        str(f'--window_size_ms={model_config.WINDOW_SIZE_MS}'),
+        str(f'--window_stride_ms={model_config.WINDOW_STRIDE_MS}'),
+        str(f'--feature_bin_count={model_config.FEATURE_SIZE}'),
         str(f'--model_architecture={model_config.MODEL_ARCHITECTURE}'),
         str(f'--how_many_training_steps={model_config.TRAINING_STEPS}'),
         str(f'--learning_rate={model_config.LEARNING_RATE}'),
@@ -171,7 +180,11 @@ def main():
         'python',
         str(f'{model_config.SPEECH_COMMANDS_HOME}/freeze.py'),
         str(f'--wanted_words={model_config.WANTED_WORDS}'),
-        str(f'--window_stride_ms={model_config.WINDOW_STRIDE}'),
+        str(f'--sample_rate={model_config.SAMPLE_RATE}'),
+        str(f'--clip_duration_ms={model_config.CLIP_DURATION_MS}'),
+        str(f'--window_size_ms={model_config.WINDOW_SIZE_MS}'),
+        str(f'--window_stride_ms={model_config.WINDOW_STRIDE_MS}'),
+        str(f'--feature_bin_count={model_config.FEATURE_SIZE}'),
         str(f'--preprocess={model_config.PREPROCESS}'),
         str(f'--model_architecture={model_config.MODEL_ARCHITECTURE}'),
         str(f'--start_checkpoint={model_config.TRAIN_DIR}{model_config.MODEL_ARCHITECTURE}.ckpt-{model_config.TOTAL_STEPS}'),
