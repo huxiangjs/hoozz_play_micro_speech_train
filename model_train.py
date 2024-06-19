@@ -94,7 +94,7 @@ def run_tflite_inference(tflite_model_path, model_type="Float"):
     train_report.append(report)
 
 def model_formate_output():
-    with open(model_config.MODEL_TFLITE_MICRO, 'w', encoding='utf-8') as fout:
+    with open(model_config.MODEL_TFLITE_MICRO, 'wb') as fout:
         model_data = []
         with open(model_config.MODEL_TFLITE, 'rb') as fin:
             model_data = fin.read()
@@ -104,30 +104,31 @@ def model_formate_output():
         train_report.append(report)
 
         all_data = list(model_data)
-        out_data = ['static const unsigned char tflite_model_data[] = {\n\t']
+        out_data = ['static const unsigned char tflite_speech_model_data[] = {\n  ']
         line_count = 0
         for item in all_data:
             line_count += 1
             s = str(f'0x{item:02x},')
             out_data.append(s)
-            out_data.append('\n\t' if line_count % 12 == 0 else ' ')
+            out_data.append('\n  ' if line_count % 12 == 0 else ' ')
         out_data[-1] = '\n' if out_data[-1] == ' ' else out_data[-1]
         out_data.append('};\n\n')
-        out_data.append(str(f'static const unsigned int tflite_model_size = {len(model_data)};\n'))
+        out_data.append(str(f'#define TFLITE_FEATURE_SIZE {model_config.FEATURE_SIZE}\n\n'))
+        out_data.append(str(f'static const unsigned int tflite_speech_model_size = {len(model_data)};\n'))
         out_data.append(str(f'static const int tflite_model_audio_sample_frequency = {model_config.SAMPLE_RATE};\n'))
-        out_data.append(str(f'static const int tflite_feature_size = {model_config.FEATURE_SIZE};\n'))
+        out_data.append('static const int tflite_feature_size = TFLITE_FEATURE_SIZE;\n')
         out_data.append(str(f'static const int tflite_feature_count = {model_config.FEATURE_COUNT};\n'))
         out_data.append('static const int tflite_feature_element_count = (tflite_feature_size * tflite_feature_count);\n')
         out_data.append(str(f'static const int tflite_feature_stride_ms = {model_config.WINDOW_STRIDE_MS};\n'))
         out_data.append(str(f'static const int tflite_feature_duration_ms = {model_config.WINDOW_SIZE_MS};\n\n'))
         out_data.append(str(f'static const int tflite_category_count = {model_config.number_of_total_labels};\n'))
         out_data.append('static const char* tflite_category_labels[tflite_category_count] = {\n')
-        out_data.append('\t"silence",\n')
-        out_data.append('\t"unknown",\n')
+        out_data.append('  "silence",\n')
+        out_data.append('  "unknown",\n')
         keys = model_config.WANTED_WORDS.split(',')
-        out_data += [str(f'\t"{_}",\n') for _ in keys]
+        out_data += [str(f'  "{_}",\n') for _ in keys]
         out_data.append('};\n')
-        fout.writelines(''.join(out_data))
+        fout.write(''.join(out_data).encode(encoding='utf-8'))
 
 def main():
     start_time = datetime.datetime.now()
