@@ -65,6 +65,14 @@ if os.path.exists(MODELS_DIR):
     shutil.rmtree(MODELS_DIR)
     print(f'Recreate: {MODELS_DIR}')
 os.makedirs(MODELS_DIR)
+if os.path.exists(LOGS_DIR):
+    shutil.rmtree(LOGS_DIR)
+    print(f'Recreate: {LOGS_DIR}')
+os.makedirs(LOGS_DIR)
+if os.path.exists(TRAIN_DIR):
+    shutil.rmtree(TRAIN_DIR)
+    print(f'Recreate: {TRAIN_DIR}')
+os.makedirs(TRAIN_DIR)
 
 MODEL_TF = os.path.join(MODELS_DIR, 'model.pb')
 MODEL_TFLITE = os.path.join(MODELS_DIR, 'model.tflite')
