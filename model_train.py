@@ -7,7 +7,6 @@ import subprocess
 import random
 import webbrowser
 import sys
-import os
 import input_data
 import models
 import numpy as np
@@ -168,7 +167,7 @@ def main():
         str(f'--port={tensorboard_port}'),
         str(f'--logdir={model_config.LOGS_DIR}'),
     ]
-    tensorboard_process = subprocess.Popen(tensorboard_info, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+    tensorboard_process = subprocess.Popen(tensorboard_info, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     tensorboard_url = str(f'http://{tensorboard_host}:{tensorboard_port}')
     if (model_config.OPEN_WEB_AUTO):
         webbrowser.open(tensorboard_url)
@@ -193,7 +192,7 @@ def main():
         str(f'--save_format=saved_model'),
         str(f'--output_file={model_config.SAVED_MODEL}'),
     ]
-    freeze_process = subprocess.Popen(freeze_info, stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+    freeze_process = subprocess.Popen(freeze_info, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     # print(freeze_process.stdout)
 
     freeze_process.wait()
@@ -218,12 +217,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # os_env = os.environ.copy()
-    # os_env['PYTHONPATH'] = os.getcwd()
-    # audio_info = [
-    #     'python',
-    #     str('tflite_micro/tensorflow/lite/micro/examples/micro_speech/audio_preprocessor.py'),
-    # ]
-    # audio_process = subprocess.Popen(audio_info, stdin=subprocess.PIPE, stdout=subprocess.PIPE, env=os_env, shell=True)
-    # print(audio_process.stdout)
-    # audio_process.wait()
