@@ -1,10 +1,12 @@
 absl-py==2.1.0
 astor==0.8.1
+future==1.0.0
 gast==0.2.2
 google-pasta==0.2.0
 grpcio==1.62.2
 h5py==2.10.0
 importlib-metadata==6.7.0
+iso8601==2.1.0
 Keras-Applications==1.0.8
 Keras-Preprocessing==1.1.2
 Markdown==3.4.4
@@ -12,6 +14,8 @@ MarkupSafe==2.1.5
 numpy==1.18.5
 opt-einsum==3.3.0
 protobuf==3.20.0
+pyserial==3.5
+PyYAML==6.0.1
 six==1.16.0
 tensorboard==1.15.0
 tensorflow==1.15.5
