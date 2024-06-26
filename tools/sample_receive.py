@@ -77,7 +77,7 @@ def from_tcp():
 def from_serial(name):
     state = False
     # Open serial
-    port = serial.Serial(name, 115200, timeout = 0.3)
+    port = serial.Serial(name, 115200, timeout = 0.1)
     # port.timeout = 1.0
 
     print('Waiting for serial port data...')
