@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 
-SPEECH_COMMANDS_HOME = 'tensorflow/tensorflow/examples/speech_commands/'
-
 import os
-import sys
-sys.path.append(f"{os.getcwd()}/{SPEECH_COMMANDS_HOME}")
-import shutil
+
+SPEECH_COMMANDS_HOME = 'tensorflow/tensorflow/examples/speech_commands/'
 
 # A comma-delimited list of the words you want to train for.
 # The options are: yes,no,up,down,left,right,on,off,stop,go
@@ -26,12 +23,6 @@ TRAINING_BATCH_SIZE = 100
 # Calculate the total number of steps, which is used to identify the checkpoint
 # file name.
 TOTAL_STEPS = str(sum(map(lambda string: int(string), TRAINING_STEPS.split(","))))
-
-# Print the configuration to confirm it
-print("Training these words: %s" % WANTED_WORDS)
-print("Training steps in each stage: %s" % TRAINING_STEPS)
-print("Learning rate in each stage: %s" % LEARNING_RATE)
-print("Total number of training steps: %s" % TOTAL_STEPS)
 
 # Calculate the percentage of 'silence' and 'unknown' training samples required
 # to ensure that we have equal number of samples for each label.
@@ -59,20 +50,6 @@ TRAIN_DIR = 'train/' # for training checkpoints and other files.
 
 # Constants for inference directories and filepaths
 MODELS_DIR = 'models'
-# if not os.path.exists(MODELS_DIR):
-#     os.mkdir(MODELS_DIR)
-if os.path.exists(MODELS_DIR):
-    shutil.rmtree(MODELS_DIR)
-    print(f'Recreate: {MODELS_DIR}')
-os.makedirs(MODELS_DIR)
-if os.path.exists(LOGS_DIR):
-    shutil.rmtree(LOGS_DIR)
-    print(f'Recreate: {LOGS_DIR}')
-os.makedirs(LOGS_DIR)
-if os.path.exists(TRAIN_DIR):
-    shutil.rmtree(TRAIN_DIR)
-    print(f'Recreate: {TRAIN_DIR}')
-os.makedirs(TRAIN_DIR)
 
 MODEL_TF = os.path.join(MODELS_DIR, 'model.pb')
 MODEL_TFLITE = os.path.join(MODELS_DIR, 'model.tflite')

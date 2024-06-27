@@ -2,16 +2,41 @@
 
 # refs: https://github.com/tensorflow/tflite-micro/blob/main/tensorflow/lite/micro/examples/micro_speech/train/train_micro_speech_model.ipynb
 
+import sys
+import os
 import model_config
+sys.path.append(f"{os.getcwd()}/{model_config.SPEECH_COMMANDS_HOME}")
+
 import subprocess
 import random
 import webbrowser
-import sys
+import shutil
 import input_data
 import models
 import numpy as np
 import tensorflow as tf
 import datetime
+
+# Print the configuration to confirm it
+print("Training these words: %s" % model_config.WANTED_WORDS)
+print("Training steps in each stage: %s" % model_config.TRAINING_STEPS)
+print("Learning rate in each stage: %s" % model_config.LEARNING_RATE)
+print("Total number of training steps: %s" % model_config.TOTAL_STEPS)
+
+# if not os.path.exists(model_config.MODELS_DIR):
+#     os.mkdir(model_config.MODELS_DIR)
+if os.path.exists(model_config.MODELS_DIR):
+    shutil.rmtree(model_config.MODELS_DIR)
+    print(f'Re-create: {model_config.MODELS_DIR}')
+os.makedirs(model_config.MODELS_DIR)
+if os.path.exists(model_config.LOGS_DIR):
+    shutil.rmtree(model_config.LOGS_DIR)
+    print(f'Re-create: {model_config.LOGS_DIR}')
+os.makedirs(model_config.LOGS_DIR)
+if os.path.exists(model_config.TRAIN_DIR):
+    shutil.rmtree(model_config.TRAIN_DIR)
+    print(f'Re-create: {model_config.TRAIN_DIR}')
+os.makedirs(model_config.TRAIN_DIR)
 
 model_settings = models.prepare_model_settings(
     len(input_data.prepare_words_list(model_config.WANTED_WORDS.split(','))),
