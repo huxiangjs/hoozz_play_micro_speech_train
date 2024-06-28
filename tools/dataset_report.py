@@ -9,7 +9,7 @@ import math
 
 DATASET_DIR = 'dataset/'
 
-def read_wave_data(file_path):
+def read_wave_duration(file_path):
     with wave.open(file_path, 'rb') as f:
         params = f.getparams()
         nchannels, sampwidth, framerate, nframes = params[:4]
@@ -53,7 +53,7 @@ if __name__ == '__main__':
         for file in file_list:
             count += 1
             path = os.path.join(dirpath, file)
-            duration_ms = read_wave_data(path)
+            duration_ms = read_wave_duration(path)
             if duration_ms > duration_max[0]:
                 duration_max = duration_ms, file
             if duration_ms < duration_min[0]:

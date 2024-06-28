@@ -12,7 +12,7 @@ DATASET_DST_DIR = 'filter_output/'
 DURATION_MIN_MS = 500       # >=500ms
 DURATION_MAX_MS = 1500      # <=1500ms
 
-def read_wave_data(file_path):
+def read_wave_duration(file_path):
     with wave.open(file_path, 'rb') as f:
         params = f.getparams()
         nchannels, sampwidth, framerate, nframes = params[:4]
@@ -62,7 +62,7 @@ if __name__ == '__main__':
             count += 1
             path = os.path.join(dirpath, file)
             print(f'[{count}/{files_total}]  {path}  ', end='', file=sys.stderr)
-            duration_ms = read_wave_data(path)
+            duration_ms = read_wave_duration(path)
             if duration_ms >= DURATION_MIN_MS and duration_ms <= DURATION_MAX_MS:
                 parent_dir = dirpath.replace(DATASET_SRC_DIR, DATASET_DST_DIR)
                 if os.path.exists(parent_dir) != True:
